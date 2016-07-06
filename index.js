@@ -1,1 +1,1 @@
-require('./algorithms/145-binary-tree-postorder-traversal.js');
+require('./algorithms/144-binary-tree-preorder-traversal.js');

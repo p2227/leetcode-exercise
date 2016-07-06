@@ -1,44 +1,30 @@
-var TreeBuilder = require('./../tools/binary-tree-builder');
+'use strict';
 
 var postorderTraversal = function(root) {
     var number = [];
-    var s = [];
-    var tmp = null;
-    while(root !== null || s.length > 0){
-        s.push({type:'root',node:root});
-        s.push({type:'right',node:root.right});
-        while(root.left){            
-            root = root.left;
-            s.push({type:'root',node:root});
-            s.push({type:'right',node:root.right});
-        }
-        number.push(root.val);
-        tmp = s.pop();
-        switch(tmp.type){
-            case 'right':
-                if(tmp.node && tmp.node.right){
-                    root = tmp.node;
-                }
-                break;
-            case 'root':
-                number.push(tmp.node.val);
-                while(tmp.type === 'root' && s.length >0){
-                    tmp = s.pop()
-                }
-                break;
-        }
+    if(root === null) return number;
+    var arr = [root];
+    while(arr.length > 0){
+        root = arr.pop();
+        number.unshift(root.val);
+        if(root.left) arr.push(root.left);
+        if(root.right) arr.push(root.right);
     }
     return number;
 };
+exports.postorderTraversal = postorderTraversal;
 
-// var tree = new TreeBuilder([]);
-// console.log(postorderTraversal(tree.root));
-
-// var tree = new TreeBuilder([1,2,3]);
-// console.log(postorderTraversal(tree.root));
-
-var tree = new TreeBuilder([1,null,2,3]);
-console.log(postorderTraversal(tree.root));
-
-var tree = new TreeBuilder([3,2,4,null,null,1]);
-console.log(postorderTraversal(tree.root));
+//The reversed result of postorder traversal is exactly the result of preorder traversal with the all the tree's left and right subtrees exchanged.
+var postorderTraversal2 = function(root) {
+    var number = [];
+    if(root === null) return number;
+    var arr = [];
+    while(root){
+        number.unshift(root.val);
+        root.left && arr.push(root.left);
+        root = root.right;
+        root || (root = arr.pop());
+    }
+    return number;
+};
+exports.postorderTraversal2 = postorderTraversal2;
